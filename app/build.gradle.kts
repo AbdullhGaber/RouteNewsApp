@@ -64,8 +64,10 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
     kapt(libs.dagger.hilt.android.compiler)
 
+    implementation(libs.glide)
     implementation(libs.retrofit2.retrofit)
     implementation(libs.converter.gson)
 
