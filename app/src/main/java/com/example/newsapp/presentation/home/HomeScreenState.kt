@@ -8,5 +8,6 @@ import com.example.newsapp.utils.Resource
 
 data class HomeScreenState(
     val sourcesState: State<Resource<List<Source>>> = mutableStateOf(Resource.Unspecified()),
-    val articlesState: State<Resource<List<Article>>> = mutableStateOf(Resource.Unspecified())
+    val articlesState: State<Resource<List<Article>>> = mutableStateOf(Resource.Unspecified()),
+    val category : State<String> = mutableStateOf("")
 )

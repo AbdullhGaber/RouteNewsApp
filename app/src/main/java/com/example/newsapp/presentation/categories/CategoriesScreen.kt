@@ -11,20 +11,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.newsapp.R
 import com.example.newsapp.presentation.categories.components.NewsCategoryLazyVerticalGrid
+import com.example.newsapp.presentation.common.NewsTopBar
 
 @Composable
-fun CategoryScreen(){
+fun CategoriesScreen(
+    onCategoryCardClick : (String) -> Unit = {}
+){
     Column(
-        modifier = Modifier.paint(
-            painter = painterResource(id = R.drawable.pattern),
-            contentScale = ContentScale.Crop
-        ).fillMaxSize()
+        modifier = Modifier
+            .paint(
+                painter = painterResource(id = R.drawable.pattern),
+                contentScale = ContentScale.Crop
+            )
+            .fillMaxSize()
     ){
+        NewsTopBar(title = stringResource(id = R.string.app_name))
+
         Text(
             text = "Choose category of your interest",
             fontSize = 24.sp,
@@ -35,7 +43,7 @@ fun CategoryScreen(){
 
         NewsCategoryLazyVerticalGrid(
             onCardClick = {
-
+                onCategoryCardClick(it)
             }
         )
     }
@@ -43,6 +51,6 @@ fun CategoryScreen(){
 
 @Composable
 @Preview(showBackground = true)
-fun PreviewCategoryScreen(){
-    CategoryScreen()
+fun PreviewCategoriesScreen(){
+    CategoriesScreen()
 }

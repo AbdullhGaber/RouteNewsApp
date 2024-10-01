@@ -5,7 +5,8 @@ import com.example.newsapp.data.repositories.NewsRepositoryImpl
 import com.example.newsapp.data.repositories.SourceRepositoryImpl
 import com.example.newsapp.domain.repositories.news_repository.NewsRepository
 import com.example.newsapp.domain.repositories.sources_repository.SourceRepository
-import com.example.newsapp.domain.usecases.news_usecases.GetAllNewsBySourceUseCase
+import com.example.newsapp.domain.usecases.news_usecases.GetArticlesUseCase
+import com.example.newsapp.domain.usecases.news_usecases.GetArticlesByQueryUseCase
 import com.example.newsapp.domain.usecases.news_usecases.NewsUseCases
 import com.example.newsapp.domain.usecases.sources_usecases.GetAllSourcesUseCase
 import com.example.newsapp.domain.usecases.sources_usecases.SourcesUseCases
@@ -14,7 +15,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -69,7 +69,8 @@ object AppModule {
         newsRepository: NewsRepository
     ) : NewsUseCases{
         return NewsUseCases(
-            getAllNewsBySourceUseCase = GetAllNewsBySourceUseCase(newsRepository)
+            getArticlesUseCase = GetArticlesUseCase(newsRepository),
+            getArticlesByQueryUseCase = GetArticlesByQueryUseCase(newsRepository)
         )
     }
 

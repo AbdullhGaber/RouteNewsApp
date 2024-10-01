@@ -4,5 +4,7 @@ import com.example.newsapp.domain.models.ArticlesResponse
 import retrofit2.Call
 
 interface NewsRepository {
-    fun getArticlesBySource(source: String) : Call<ArticlesResponse>
+    fun getArticles(query: String, source: String) : Call<ArticlesResponse>
+
+    fun getArticlesByQuery(query: String) : Call<ArticlesResponse>
 }

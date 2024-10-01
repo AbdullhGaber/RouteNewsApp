@@ -8,7 +8,12 @@ import retrofit2.Call
 class NewsRepositoryImpl(
     val newsAPIService: NewsAPIService
 ) : NewsRepository{
-    override fun getArticlesBySource(source: String): Call<ArticlesResponse> {
-        return newsAPIService.getArticlesBySources(source)
+
+    override fun getArticles(query: String , source: String): Call<ArticlesResponse> {
+        return newsAPIService.getArticles(query,source)
+    }
+
+    override fun getArticlesByQuery(query: String): Call<ArticlesResponse> {
+        return newsAPIService.getArticlesByQuery(query)
     }
 }

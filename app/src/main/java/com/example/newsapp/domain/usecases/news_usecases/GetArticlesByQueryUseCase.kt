@@ -4,10 +4,10 @@ import com.example.newsapp.domain.models.ArticlesResponse
 import com.example.newsapp.domain.repositories.news_repository.NewsRepository
 import retrofit2.Call
 
-class GetAllNewsBySourceUseCase(
+class GetArticlesByQueryUseCase(
     val newsRepository: NewsRepository
-){
-    operator fun invoke(source : String) : Call<ArticlesResponse>{
-        return newsRepository.getArticlesBySource(source)
+) {
+    operator fun invoke(query : String) : Call<ArticlesResponse>{
+        return newsRepository.getArticlesByQuery(query)
     }
 }

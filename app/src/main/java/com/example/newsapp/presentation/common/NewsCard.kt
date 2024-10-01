@@ -37,10 +37,11 @@ fun NewsCard(
             modifier = Modifier
                 .clip(RoundedCornerShape(10.dp))
                 .fillMaxWidth(),
-            model = article?.urlToImage,
-            contentDescription = article?.description,
+            model = article?.urlToImage ?: "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg",
+            contentDescription = article?.description?: "no description",
             contentScale = ContentScale.Crop,
-            loading = placeholder(painter = painterResource(id = R.drawable.placeholder_news))
+            loading = placeholder(painter = painterResource(id = R.drawable.placeholder_news)),
+            failure = placeholder(painter = painterResource(id = R.drawable.placeholder_news))
         )
 
 

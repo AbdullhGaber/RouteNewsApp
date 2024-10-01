@@ -9,6 +9,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.newsapp.presentation.home.HomeScreen
 import com.example.newsapp.presentation.home.HomeScreenState
 import com.example.newsapp.presentation.home.HomeViewModel
+import com.example.newsapp.presentation.nav_host.NewsNavHost
 import com.example.newsapp.ui.theme.NewsAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,20 +20,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NewsAppTheme {
-                val homeViewModel = hiltViewModel<HomeViewModel>()
-
-                val articlesState = homeViewModel.articlesStateFlow
-                val sourcesState = homeViewModel.sourcesStateFlow
-
-                val homeScreenState = HomeScreenState(
-                    articlesState = articlesState.collectAsState(),
-                    sourcesState = sourcesState.collectAsState()
-                )
-
-                HomeScreen(
-                    homeScreenState,
-                    homeViewModel::onEvent
-                )
+                NewsNavHost()
             }
         }
     }

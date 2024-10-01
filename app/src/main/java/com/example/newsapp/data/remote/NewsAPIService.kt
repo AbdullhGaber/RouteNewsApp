@@ -11,12 +11,14 @@ interface NewsAPIService {
     fun getSources() : Call<SourcesResponse>
 
     @GET("everything")
-    fun getArticlesBySources(
-        @Query("sources") source : String
+    fun getArticles(
+        @Query("q") query : String,
+        @Query("sources") sources : String
     ) : Call<ArticlesResponse>
 
     @GET("everything")
     fun getArticlesByQuery(
         @Query("q") query : String
     ) : Call<ArticlesResponse>
+
 }

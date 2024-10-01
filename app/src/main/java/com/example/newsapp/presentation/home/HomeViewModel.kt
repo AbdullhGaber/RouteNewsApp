@@ -23,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     val mNewsUseCases: NewsUseCases,
-    val mSourcesUseCases: SourcesUseCases
+    val mSourcesUseCases: SourcesUseCases,
 ): ViewModel() {
 
     private val _articlesStateFlow = MutableStateFlow<Resource<List<Article>>>(Resource.Unspecified())
@@ -34,13 +34,12 @@ class HomeViewModel @Inject constructor(
 
     init {
         onEvent(HomeScreenEvents.GetAllSources)
-        onEvent(HomeScreenEvents.GetAllArticlesBySource("abc-news"))
     }
 
     fun onEvent(event : HomeScreenEvents){
         when(event){
-            is HomeScreenEvents.GetAllArticlesBySource -> {
-                getArticlesBySource(event.source)
+            is HomeScreenEvents.GetAllArticles -> {
+                getArticles(event.query , event.source)
             }
 
             is HomeScreenEvents.GetAllSources -> {
@@ -89,12 +88,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getArticlesBySource(source : String){
+    private fun getArticles(query : String, source : String){
         viewModelScope.launch(Dispatchers.IO){
             _articlesStateFlow.emit(
                 Resource.Loading()
             )
-            mNewsUseCases.getAllNewsBySourceUseCase(source).enqueue(
+            mNewsUseCases.getArticlesUseCase(query,source).enqueue(
                 object : Callback<ArticlesResponse>{
                     override fun onResponse(
                         call: Call<ArticlesResponse>,
@@ -105,6 +104,8 @@ class HomeViewModel @Inject constructor(
                             viewModelScope.launch{
                                 _articlesStateFlow.emit(Resource.Success(articles))
                             }
+                            Log.e("body : ", response.body().toString())
+                            Log.e("code", response.code().toString())
                         }else{
                             Log.e("API ERROR", "body is null")
                             Log.e("API ERROR - is successful" , response.isSuccessful.toString())
