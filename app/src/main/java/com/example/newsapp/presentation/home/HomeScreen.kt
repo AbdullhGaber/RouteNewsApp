@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.newsapp.R
+import com.example.newsapp.domain.models.Article
 import com.example.newsapp.presentation.common.NewsCard
 import com.example.newsapp.presentation.common.NewsScrollableTabRow
 import com.example.newsapp.presentation.common.NewsTopBar
@@ -31,6 +32,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun HomeScreen(
     modifier : Modifier = Modifier,
+    navigateToScreen : (Article) -> Unit = {},
     homeScreenState : HomeScreenState,
     homeScreenEvents: (HomeScreenEvents) -> Unit = {}
 ){
@@ -42,12 +44,8 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         homeScreenEvents(HomeScreenEvents.GetAllArticles(homeScreenState.category.value,"abc-news"))
     }
-
-    Column{
-        NewsTopBar(title = homeScreenState.category.value)
-
         Column(
-            Modifier
+            modifier
                 .fillMaxSize()
                 .padding(horizontal = 8.dp)
                 .paint(painterResource(id = R.drawable.pattern), contentScale = ContentScale.Crop)
@@ -77,13 +75,16 @@ fun HomeScreen(
                     items(articles){
                         NewsCard(
                             modifier = Modifier.padding(horizontal = 16.dp),
-                            article = it
+                            article = it,
+                            onClick = {
+                                navigateToScreen(it)
+                            }
                         )
                     }
                 }
             }
         }
-    }
+
 }
 
 

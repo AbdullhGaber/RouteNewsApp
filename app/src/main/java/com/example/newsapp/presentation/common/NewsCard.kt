@@ -1,5 +1,6 @@
 package com.example.newsapp.presentation.common
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,15 +29,19 @@ import com.example.newsapp.domain.models.Article
 @Composable
 fun NewsCard(
     modifier: Modifier = Modifier,
-    article: Article? = null
+    article: Article? = null,
+    onClick : () -> Unit = {}
 ){
     Column(
-        modifier.padding(vertical = 24.dp)
+        modifier.padding(vertical = 24.dp).clickable {
+            onClick()
+        }
     ){
         GlideImage(
             modifier = Modifier
                 .clip(RoundedCornerShape(10.dp))
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .height(300.dp),
             model = article?.urlToImage ?: "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg",
             contentDescription = article?.description?: "no description",
             contentScale = ContentScale.Crop,

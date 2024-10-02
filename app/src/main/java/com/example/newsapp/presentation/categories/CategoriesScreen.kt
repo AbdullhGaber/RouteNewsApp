@@ -31,7 +31,7 @@ fun CategoriesScreen(
             )
             .fillMaxSize()
     ){
-        NewsTopBar(title = stringResource(id = R.string.app_name))
+        NewsTopBar(title = stringResource(id = R.string.app_name),)
 
         Text(
             text = "Choose category of your interest",
