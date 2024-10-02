@@ -2,6 +2,7 @@ package com.example.newsapp.presentation.common
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -23,7 +24,11 @@ import com.example.newsapp.ui.theme.Green
 @Composable
 fun NewsTopBar(
     modifier : Modifier = Modifier,
-    title : String
+    title : String,
+    showNavIcon : Boolean = false,
+    showSearchIcon : Boolean = false,
+    onNavIconClick :  () -> Unit ={},
+    onActionIconClick : () -> Unit = {}
 ){
     CenterAlignedTopAppBar(
         title = {
@@ -35,11 +40,15 @@ fun NewsTopBar(
         },
 
         actions = {
-            Image(
-                painter = painterResource(id = R.drawable.ic_search),
-                contentDescription = "Top bar menu",
-                modifier = Modifier.padding(end = 16.dp)
-            )
+            if(showSearchIcon){
+                Image(
+                    painter = painterResource(id = R.drawable.ic_search),
+                    contentDescription = "Top bar menu",
+                    modifier = Modifier.padding(end = 16.dp).clickable{
+                        onActionIconClick()
+                    }
+                )
+            }
         },
 
         modifier = modifier.clip(RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp)),
@@ -51,11 +60,15 @@ fun NewsTopBar(
         ),
 
         navigationIcon = {
-            Image(
-                painter = painterResource(id = R.drawable.ic_menu_top_bar),
-                contentDescription = "Top bar menu",
-                modifier = Modifier.padding(start = 8.dp)
-            )
+            if(showNavIcon){
+                Image(
+                    painter = painterResource(id = R.drawable.ic_menu_top_bar),
+                    contentDescription = "Top bar menu",
+                    modifier = Modifier.padding(start = 8.dp).clickable{
+                        onNavIconClick()
+                    }
+                )
+            }
         },
     )
 }
@@ -63,5 +76,5 @@ fun NewsTopBar(
 @Composable
 @Preview
 fun PreviewNewsTopBar(){
-    NewsTopBar(title = "News App")
+//    NewsTopBar(title = "News App")
 }

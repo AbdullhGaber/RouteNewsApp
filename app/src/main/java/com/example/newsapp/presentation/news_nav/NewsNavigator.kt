@@ -1,5 +1,8 @@
 package com.example.newsapp.presentation.news_nav
 
+import android.os.Build
+import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -15,10 +18,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,24 +34,33 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.newsapp.domain.models.Article
 import com.example.newsapp.presentation.common.NewsTopBar
 import com.example.newsapp.presentation.home.HomeScreen
-import com.example.newsapp.presentation.home.HomeScreenEvents
 import com.example.newsapp.presentation.home.HomeScreenState
 import com.example.newsapp.presentation.home.HomeViewModel
 import com.example.newsapp.presentation.nav_host.Route
-//import androidx.navigation.compose.rememberNavController
+import com.example.newsapp.presentation.news_details.NewsDetailsScreen
+import com.example.newsapp.presentation.settings.SettingsScreen
 import com.example.newsapp.ui.theme.Green
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun NewsNavigator(
     navHostController : NavHostController,
     title : String
 ){
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val coroutineScope = rememberCoroutineScope()
+    val newsNavController = rememberNavController()
     ModalNavigationDrawer(
         drawerContent = {
             ModalDrawerSheet {
@@ -80,6 +94,21 @@ fun NewsNavigator(
                         selected = index == selectedIdx.intValue,
                         onClick = {
                             selectedIdx.intValue = index
+                            when(index){
+                                0 -> {
+                                    navHostController.navigate(Route.StartNavigation.route)
+                                    coroutineScope.launch {
+                                        drawerState.close()
+                                    }
+                                }
+
+                                1 -> {
+                                    newsNavController.navigate(Route.SettingsScreen.route)
+                                    coroutineScope.launch {
+                                        drawerState.close()
+                                    }
+                                }
+                            }
                         },
                         icon = {
                             Image(
@@ -96,11 +125,18 @@ fun NewsNavigator(
     ){
         Scaffold(
             topBar = {
-                NewsTopBar(title = title )
+                NewsTopBar(
+                    title = title,
+                    onNavIconClick = {
+                        coroutineScope.launch {
+                            drawerState.open()
+                        }
+                    },
+                    showSearchIcon = true,
+                    showNavIcon = true
+                )
             }
         ){padding ->
-            val newsNavController = rememberNavController()
-
             NavHost(navController = newsNavController, startDestination = Route.HomeScreen.route ){
                 composable(
                     route = Route.HomeScreen.route
@@ -119,11 +155,29 @@ fun NewsNavigator(
                     )
 
                     HomeScreen(
+                        modifier = Modifier.padding(padding),
                         homeScreenState = homeScreenState,
                         homeScreenEvents = homeViewModel::onEvent,
-                        modifier = Modifier.padding(padding)
+                        navigateToScreen = {
+                            newsNavController.currentBackStackEntry?.savedStateHandle?.set("article" , it)
+                            newsNavController.navigate(Route.DetailsScreen.route)
+                        }
                     )
                 }
+
+                composable(
+                    route = Route.DetailsScreen.route,
+                ){
+                    val article : Article? = newsNavController.previousBackStackEntry?.savedStateHandle?.get("article")
+                    NewsDetailsScreen(article)
+                }
+
+                composable(
+                    route = Route.SettingsScreen.route
+                ){
+                    SettingsScreen()
+                }
+
             }
         }
     }
