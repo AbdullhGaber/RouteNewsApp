@@ -6,9 +6,10 @@
     <string name="business">الأعمال</string>
     <string name="environment">البيئة</string>
     <string name="science">العلوم</string>
-    <string name="categories">Categories</string>
-    <string name="settings">Settings</string>
-    <string name="arabic">Arabic</string>
-    <string name="english">English</string>
-    <string name="language">Language</string>
+    <string name="categories">المواضيع</string>
+    <string name="settings">الاعدادات</string>
+    <string name="arabic">العربية</string>
+    <string name="english">الإنجليزية</string>
+    <string name="language">اللغة</string>
+    <string name="choose_category_of_your_interest">اختر الموضوع المفضل لديك</string>
 </resources>

@@ -52,7 +52,7 @@ fun NewsCategoryCard(
             )
 
             Text(
-                text = stringResource(id = category.name),
+                text = stringResource(id = category.nameID),
                 Modifier.align(CenterHorizontally),
                 color = Color.White,
                 fontSize = 24.sp

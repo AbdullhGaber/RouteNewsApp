@@ -66,11 +66,10 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     kapt(libs.dagger.hilt.android.compiler)
-
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.glide)
     implementation(libs.retrofit2.retrofit)
     implementation(libs.converter.gson)
-
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
