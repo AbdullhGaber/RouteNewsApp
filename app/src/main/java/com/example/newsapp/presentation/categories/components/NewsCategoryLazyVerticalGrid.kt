@@ -11,16 +11,17 @@ import com.example.newsapp.presentation.common.NewsCategoryCard
 
 @Composable
 fun NewsCategoryLazyVerticalGrid(
-    onCardClick : (String) -> Unit
+    onCardClick : (String , String) -> Unit
 ){
     LazyVerticalGrid(columns = GridCells.Fixed(2)) {
         itemsIndexed(Category.categories){ index, category ->
-            val categoryName = stringResource(id = category.name)
+            val categoryName = stringResource(id = category.nameID)
+            val categoryQuery = category.name
             NewsCategoryCard(
                 category = category,
                 pos = index,
                 onClick = {
-                    onCardClick(categoryName)
+                    onCardClick(categoryQuery , categoryName)
                 }
             )
         }
@@ -30,5 +31,5 @@ fun NewsCategoryLazyVerticalGrid(
 @Composable
 @Preview
 fun PreviewNewsCategoryLazyVerticalGrid(){
-    NewsCategoryLazyVerticalGrid({})
+    NewsCategoryLazyVerticalGrid({n,q->})
 }

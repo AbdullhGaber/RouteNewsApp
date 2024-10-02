@@ -21,7 +21,7 @@ import com.example.newsapp.presentation.common.NewsTopBar
 
 @Composable
 fun CategoriesScreen(
-    onCategoryCardClick : (String) -> Unit = {}
+    onCategoryCardClick : (String,String) -> Unit = {q,n->}
 ){
     Column(
         modifier = Modifier
@@ -33,17 +33,19 @@ fun CategoriesScreen(
     ){
         NewsTopBar(title = stringResource(id = R.string.app_name),)
 
+        Spacer(modifier = Modifier.height(16.dp))
+
         Text(
-            text = "Choose category of your interest",
+            text = stringResource(R.string.choose_category_of_your_interest),
             fontSize = 24.sp,
             modifier = Modifier.align(CenterHorizontally)
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         NewsCategoryLazyVerticalGrid(
-            onCardClick = {
-                onCategoryCardClick(it)
+            onCardClick = { queryName,name, ->
+                onCategoryCardClick(queryName , name)
             }
         )
     }

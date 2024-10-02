@@ -1,5 +1,7 @@
 package com.example.newsapp.presentation.nav_host
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
@@ -10,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.newsapp.presentation.categories.CategoriesScreen
 import com.example.newsapp.presentation.news_nav.NewsNavigator
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun NewsNavHost(){
     val navController = rememberNavController()
@@ -23,18 +26,19 @@ fun NewsNavHost(){
                     route = Route.CategoriesScreen.route
                 ){
                     CategoriesScreen(
-                        onCategoryCardClick = {
-                            navigateToTab(navController,Route.NewsNavigation.route+"/$it")
+                        onCategoryCardClick = { queryName,name ->
+                            navigateToTab(navController,Route.NewsNavigation.route+"/$queryName/$name")
                         }
                     )
                 }
             }
 
         composable(
-            route = Route.NewsNavigation.route+"/{category}",
+            route = Route.NewsNavigation.route+"/{categoryQuery}/{categoryName}",
         ){
-            val category = it.arguments?.getString("category") ?: "sports"
-            NewsNavigator(navController , category)
+            val categoryQuery = it.arguments?.getString("categoryQuery") ?: "sports"
+            val categoryName = it.arguments?.getString("categoryName") ?: "sports"
+            NewsNavigator(navController , categoryQuery , categoryName)
         }
     }
 
@@ -48,5 +52,5 @@ fun navigateToTab(navController: NavController , route : String){
 @Composable
 @Preview
 fun PreviewNewsNavHost(){
-    NewsNavHost()
+//    NewsNavHost()
 }

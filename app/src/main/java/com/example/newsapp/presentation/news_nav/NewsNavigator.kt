@@ -39,6 +39,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.newsapp.R
 import com.example.newsapp.domain.models.Article
 import com.example.newsapp.presentation.common.NewsTopBar
 import com.example.newsapp.presentation.home.HomeScreen
@@ -56,8 +57,17 @@ import kotlinx.coroutines.runBlocking
 @Composable
 fun NewsNavigator(
     navHostController : NavHostController,
+    titleAsQuery : String,
     title : String
 ){
+    val titleState = remember {
+        mutableStateOf(title)
+    }
+
+    val titleQueryState = remember {
+        mutableStateOf(titleAsQuery)
+    }
+
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
     val newsNavController = rememberNavController()
@@ -71,7 +81,7 @@ fun NewsNavigator(
                         .background(color = Green)
                 ){
                     Text(
-                        text = "News App",
+                        text = stringResource(id = R.string.app_name),
                         fontSize = 24.sp,
                         color = Color.White,
                         modifier = Modifier.align(
@@ -126,7 +136,7 @@ fun NewsNavigator(
         Scaffold(
             topBar = {
                 NewsTopBar(
-                    title = title,
+                    title = titleState.value,
                     onNavIconClick = {
                         coroutineScope.launch {
                             drawerState.open()
@@ -147,9 +157,7 @@ fun NewsNavigator(
                     val sourcesState = homeViewModel.sourcesStateFlow
 
                     val homeScreenState = HomeScreenState(
-                        category = remember {
-                            mutableStateOf(title)
-                        },
+                        category = titleQueryState,
                         articlesState = articlesState.collectAsState(),
                         sourcesState = sourcesState.collectAsState()
                     )
@@ -175,9 +183,11 @@ fun NewsNavigator(
                 composable(
                     route = Route.SettingsScreen.route
                 ){
-                    SettingsScreen()
+                    titleState.value = stringResource(R.string.settings)
+                    SettingsScreen(
+                        modifier = Modifier.padding(padding)
+                    )
                 }
-
             }
         }
     }
