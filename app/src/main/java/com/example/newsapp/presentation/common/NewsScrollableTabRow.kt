@@ -18,18 +18,15 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.newsapp.domain.models.Source
 import com.example.newsapp.ui.theme.Green
 
-val categories = listOf(
-    "ABC news",
-    "Jazira news",
-    "BBC news",
-    "CNN news"
-)
 
 @Composable
 fun NewsScrollableTabRow(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    sources : List<Source>? = null,
+    onItemClick : (String) -> Unit = {}
 ){
     val selectedIdx = remember {
         mutableIntStateOf(0)
@@ -43,7 +40,7 @@ fun NewsScrollableTabRow(
         containerColor = Color.Transparent,
         divider = {}
     ){
-        categories.forEachIndexed { index, category ->
+        sources?.forEachIndexed { index, source ->
             val isSelected = index == selectedIdx.intValue
             Box(
                 modifier = Modifier.
@@ -56,10 +53,13 @@ fun NewsScrollableTabRow(
                     shape = RoundedCornerShape(10.dp)
                 ).
                 padding(vertical = 4.dp, horizontal = 8.dp).
-                clickable { selectedIdx.intValue = index }
+                clickable {
+                    selectedIdx.intValue = index
+                    onItemClick(source.id!!)
+                }
             ){
                 Text(
-                    text = category,
+                    text = source.name!!,
                     color = if(isSelected) Color.White else Green,
                     modifier = Modifier.align(Alignment.Center)
                 )

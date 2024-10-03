@@ -1,6 +1,6 @@
 package com.example.newsapp.presentation.common
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,37 +18,48 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.integration.compose.Placeholder
+import com.bumptech.glide.integration.compose.placeholder
 import com.example.newsapp.R
-import com.example.newsapp.domain.models.News
-import com.example.newsapp.domain.models.news
+import com.example.newsapp.domain.models.Article
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun NewsCard(
     modifier: Modifier = Modifier,
-    news : News
+    article: Article? = null,
+    onClick : () -> Unit = {}
 ){
     Column(
-        modifier.padding(vertical = 24.dp)
+        modifier.padding(vertical = 24.dp).clickable {
+            onClick()
+        }
     ){
-        Image(
+        GlideImage(
             modifier = Modifier
                 .clip(RoundedCornerShape(10.dp))
-                .fillMaxWidth(),
-            painter = painterResource(id = R.drawable.news_1),
-            contentDescription = null,
-            contentScale = ContentScale.Crop
+                .fillMaxWidth()
+                .height(300.dp),
+            model = article?.urlToImage ?: "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg",
+            contentDescription = article?.description?: "no description",
+            contentScale = ContentScale.Crop,
+            loading = placeholder(painter = painterResource(id = R.drawable.placeholder_news)),
+            failure = placeholder(painter = painterResource(id = R.drawable.placeholder_news))
         )
+
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        Text(text = news.newsCategory , fontSize = 8.sp , color = Color.Gray)
+        Text(text = article?.source?.name ?: "source" , fontSize = 8.sp , color = Color.Gray)
 
         Spacer(modifier = Modifier.height(5.dp))
 
-        Text(text = news.title , fontSize = 16.sp)
+        Text(text = article?.title ?: "title" , fontSize = 16.sp)
 
         Text(
-            text = news.timestamps,
+            text = article?.publishedAt ?: "3 hours ago",
             fontSize = 12.sp,
             color = Color.Gray,
             modifier = Modifier.align(Alignment.End)
@@ -59,5 +70,5 @@ fun NewsCard(
 @Composable
 @Preview
 fun PreviewNewsCard(){
-    NewsCard(news = news[0])
+    NewsCard()
 }

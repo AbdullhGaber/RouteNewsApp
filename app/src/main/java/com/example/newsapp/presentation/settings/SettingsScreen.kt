@@ -1,5 +1,7 @@
 package com.example.newsapp.presentation.settings
 
+import android.app.Activity
+import android.content.Intent
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,18 +36,19 @@ import androidx.compose.ui.unit.sp
 import com.example.newsapp.R
 import com.example.newsapp.presentation.common.NewsTopBar
 import com.example.newsapp.ui.theme.Green
+import com.example.newsapp.utils.setAppLocale
 
 @Composable
-fun SettingsScreen(){
+fun SettingsScreen(
+    modifier : Modifier = Modifier
+){
+    val context = LocalContext.current
+    val activity = (context as? Activity)
     Column(
-        Modifier
+        modifier
             .fillMaxSize()
             .paint(painterResource(id = R.drawable.pattern), contentScale = ContentScale.Crop)
     ){
-        NewsTopBar(title = stringResource(R.string.settings))
-
-        Spacer(modifier = Modifier.height(32.dp))
-
         Text(
             text = stringResource(R.string.language),
             fontSize = 12.sp,
@@ -102,6 +106,12 @@ fun SettingsScreen(){
                     onClick = {
                         itemIdx.intValue = 0
                         isExpanded.value = false
+
+                        setAppLocale(context, "en")
+                        activity?.let {
+                            it.finish()
+                            it.startActivity(Intent(context, it::class.java))
+                        }
                     }
                 )
 
@@ -112,6 +122,11 @@ fun SettingsScreen(){
                     onClick = {
                         itemIdx.intValue = 1
                         isExpanded.value = false
+                        setAppLocale(context, "ar")
+                        activity?.let {
+                            it.finish()
+                            it.startActivity(Intent(context, it::class.java))
+                        }
                     }
                 )
             }

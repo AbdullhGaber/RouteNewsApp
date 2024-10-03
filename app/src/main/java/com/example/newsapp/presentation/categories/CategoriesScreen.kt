@@ -9,33 +9,52 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.newsapp.R
 import com.example.newsapp.presentation.categories.components.NewsCategoryLazyVerticalGrid
+import com.example.newsapp.presentation.common.NewsTopBar
 
 @Composable
-fun CategoryScreen(){
+fun CategoriesScreen(
+    onCategoryCardClick : (String,String) -> Unit = {q,n->}
+){
     Column(
-        modifier = Modifier.paint(
-            painter = painterResource(id = R.drawable.pattern),
-            contentScale = ContentScale.Crop
-        ).fillMaxSize()
+        modifier = Modifier
+            .paint(
+                painter = painterResource(id = R.drawable.pattern),
+                contentScale = ContentScale.Crop
+            )
+            .fillMaxSize()
     ){
+        NewsTopBar(
+            content = {
+                Text(
+                    text = stringResource(id = R.string.app_name) ,
+                    color = Color.White,
+                    fontSize = 24.sp
+                )
+            }
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Text(
-            text = "Choose category of your interest",
+            text = stringResource(R.string.choose_category_of_your_interest),
             fontSize = 24.sp,
             modifier = Modifier.align(CenterHorizontally)
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         NewsCategoryLazyVerticalGrid(
-            onCardClick = {
-
+            onCardClick = { queryName,name, ->
+                onCategoryCardClick(queryName , name)
             }
         )
     }
@@ -43,6 +62,6 @@ fun CategoryScreen(){
 
 @Composable
 @Preview(showBackground = true)
-fun PreviewCategoryScreen(){
-    CategoryScreen()
+fun PreviewCategoriesScreen(){
+    CategoriesScreen()
 }

@@ -13,6 +13,7 @@ val Brown = Color(0xFFCF7E48)
 val LightBlue = Color(0xFF4882CF)
 val LightYellow = Color(0xFFF2D352)
 val Green = Color(0xFF39A552)
+val Shimmer = Color(0xFFC3C3C3)
 
 
 val Purple40 = Color(0xFF6650a4)
