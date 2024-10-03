@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,7 +32,15 @@ fun CategoriesScreen(
             )
             .fillMaxSize()
     ){
-        NewsTopBar(title = stringResource(id = R.string.app_name),)
+        NewsTopBar(
+            content = {
+                Text(
+                    text = stringResource(id = R.string.app_name) ,
+                    color = Color.White,
+                    fontSize = 24.sp
+                )
+            }
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 

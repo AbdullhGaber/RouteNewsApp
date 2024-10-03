@@ -1,9 +1,14 @@
 package com.example.newsapp.presentation.home
 
 import android.util.Log
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -12,6 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
@@ -59,6 +65,8 @@ fun HomeScreen(
                 NewsCardShimmer()
             }
 
+
+
             sources?.let{
                 NewsScrollableTabRow(
                     sources = sources,
@@ -68,18 +76,35 @@ fun HomeScreen(
                 )
             }
 
+            if(homeScreenState.articlesState.value is Resource.Success && homeScreenState.articlesState.value.data?.isEmpty()!!){
+                   Column (
+                       verticalArrangement = Arrangement.Center,
+                       horizontalAlignment = Alignment.CenterHorizontally,
+                       modifier = Modifier.fillMaxWidth().weight(1f)
+                   ){
+                       Image(
+                           painter = painterResource(id = R.drawable.no_results),
+                           contentDescription = "No results",
+                           contentScale = ContentScale.Crop,
+                           modifier = Modifier.size(350.dp)
+                       )
+                   }
+            }
+
             articles?.let{
-                LazyColumn(
-                    state = listState,
-                ){
-                    items(articles){
-                        NewsCard(
-                            modifier = Modifier.padding(horizontal = 16.dp),
-                            article = it,
-                            onClick = {
-                                navigateToScreen(it)
-                            }
-                        )
+                if(articles.isNotEmpty()){
+                    LazyColumn(
+                        state = listState,
+                    ){
+                        items(articles){
+                            NewsCard(
+                                modifier = Modifier.padding(horizontal = 16.dp),
+                                article = it,
+                                onClick = {
+                                    navigateToScreen(it)
+                                }
+                            )
+                        }
                     }
                 }
             }
