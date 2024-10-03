@@ -12,4 +12,6 @@
     <string name="english">الإنجليزية</string>
     <string name="language">اللغة</string>
     <string name="choose_category_of_your_interest">اختر الموضوع المفضل لديك</string>
+    <string name="search_for_articles">ابحث عن مقالات</string>
+    <string name="article_details">تفاصيل المقالة</string>
 </resources>

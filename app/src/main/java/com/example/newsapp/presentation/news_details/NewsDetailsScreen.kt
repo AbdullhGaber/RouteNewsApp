@@ -33,17 +33,17 @@ import com.example.newsapp.presentation.common.NewsTopBar
 
 @Composable
 fun NewsDetailsScreen(
+    modifier: Modifier = Modifier,
     article : Article? = null
 ){
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .paint(
                 painter = painterResource(id = R.drawable.pattern),
                 contentScale = ContentScale.Crop
             )
     ){
-        NewsTopBar(title = article?.title ?: "title")
 
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -86,5 +86,5 @@ fun NewsDetailsScreen(
 @Composable
 @Preview(showBackground = true)
 fun PreviewNewsDetailsScreen(){
-    NewsDetailsScreen(Article())
+    NewsDetailsScreen(article = Article())
 }
